@@ -10,9 +10,17 @@ export const GlobalStyles = createGlobalStyle`
     padding: 0;
     font-family: 'Poppins', sans-serif;
     }
+
     body {
-        background-color: #778da9 ;
-        font-size: 1rem;
-    }
+        height:100vh;
+        background-color: #92afd4 ;
+    } 
     
+    #root {
+        width:100%;
+        height:100%;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+    }
 `
