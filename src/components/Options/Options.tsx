@@ -1,26 +1,29 @@
 import { useContext } from "react"
 import { QuizContext } from "../../context/quizContext"
+import Questions from "../Questions/Questions"
 import StyledMain, { InputContainer, OptionsButton } from "./Options.styled"
 
 const Options = () => {
 
-  const {options, handleInputChange} = useContext(QuizContext)
-
-  console.log(options)
+  const {options, handleInputChange,isStart, handleStart} = useContext(QuizContext)
+  
   return (
-    <StyledMain>
+    <>
+    {
+      !isStart ?
+      <StyledMain>
       <h1>Quiz Options</h1>
-      <form >
+      <form onSubmit={handleStart}>
         <InputContainer>
             <label htmlFor="amount">Number of Questions</label> <br />
-            <input type="number" name="amount" value={options.amount} onChange={handleInputChange} />
+            <input type="number" name="amount" max={50} value={options.amount} onChange={handleInputChange} />
         </InputContainer>
         <InputContainer>
             <label htmlFor="category">Category</label> <br />
             <select name="category" value={options.category} onChange={handleInputChange} >
               <option value="sports">Sports</option>
               <option value="history">History</option>
-              <option value="politics">Politics</option>
+              <option value="geography">Geography</option>
             </select>
         </InputContainer>
         <InputContainer>
@@ -31,9 +34,12 @@ const Options = () => {
               <option value="hard">Hard</option>
             </select>
         </InputContainer>
-        <OptionsButton>Start</OptionsButton>
+        <OptionsButton >Start</OptionsButton>
       </form>
     </StyledMain>
+    : <Questions/>
+  }
+    </>
   )
 }
 

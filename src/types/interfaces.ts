@@ -20,5 +20,7 @@ export interface IFetchedData {
 
 export interface IQuizContext {
     options : IOptions
+    isStart : boolean
     handleInputChange : (e:any) => void
+    handleStart : (e:any) => void
 }
