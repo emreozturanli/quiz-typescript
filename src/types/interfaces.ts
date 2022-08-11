@@ -21,6 +21,11 @@ export interface IFetchedData {
 export interface IQuizContext {
     options : IOptions
     isStart : boolean
+    questions : IQuestions[]
+    index : number
+    correct : number
+    isLoading: boolean
     handleInputChange : (e:any) => void
     handleStart : (e:any) => void
+    nextQuestion : (element:string) => void
 }

@@ -19,6 +19,9 @@ export const QuizContextProvider = ({children}: QuizContextProps)=>{
     })
     const [questions, setQuestions] = useState<IQuestions[]>([]);
     const [isStart, setIsStart] = useState(false)
+    const [index,setIndex] = useState(0)
+    const [correct,setCorrect] = useState(0)
+    const [isLoading,setIsLoading] = useState(true)
 
     // convert string category to number
     const selectedCategory = (): number=>{
@@ -34,6 +37,7 @@ export const QuizContextProvider = ({children}: QuizContextProps)=>{
             const { data } = await axios.get<IFetchedData>(url);
             console.log(data.results);
             setQuestions(data.results)
+            setIsLoading(false)
         } catch (error) {
             console.log("error");
         }
@@ -54,11 +58,28 @@ export const QuizContextProvider = ({children}: QuizContextProps)=>{
         setIsStart(true)
     }
 
+    // bringing next question
+    const nextQuestion = (e:string):void =>{
+        if(e=== questions[index].correct_answer){
+            setCorrect(prev => prev + 1)
+        }
+        if(index < options.amount - 1){
+            setIndex(prev => prev + 1)
+        }else{
+            //add modal for result
+        }
+    }
+
     return <QuizContext.Provider value={{
         options,
         isStart,
+        questions,
+        index,
+        isLoading,
+        correct,
         handleInputChange,
-        handleStart
+        handleStart,
+        nextQuestion
     }}>
         {children}
     </QuizContext.Provider>
