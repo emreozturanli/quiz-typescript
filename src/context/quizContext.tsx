@@ -22,6 +22,7 @@ export const QuizContextProvider = ({children}: QuizContextProps)=>{
     const [index,setIndex] = useState(0)
     const [correct,setCorrect] = useState(0)
     const [isLoading,setIsLoading] = useState(true)
+    const [showResult, setShowResult] = useState(false)
 
     // convert string category to number
     const selectedCategory = (): number=>{
@@ -32,10 +33,10 @@ export const QuizContextProvider = ({children}: QuizContextProps)=>{
 
     //fetch questions
     const getQuestions = async () => {
+        setIsLoading(true)
         const url:string = `${API_ENDPOINT}amount=${options.amount}&category=${ selectedCategory()}&difficulty=${options.difficulty}&type=multiple`
         try {
             const { data } = await axios.get<IFetchedData>(url);
-            console.log(data.results);
             setQuestions(data.results)
             setIsLoading(false)
         } catch (error) {
@@ -63,13 +64,25 @@ export const QuizContextProvider = ({children}: QuizContextProps)=>{
         if(e=== questions[index].correct_answer){
             setCorrect(prev => prev + 1)
         }
-        if(index < options.amount - 1){
-            setIndex(prev => prev + 1)
-        }else{
-            //add modal for result
-        }
+        setIndex((prev) => {
+            const index = prev + 1
+            if (index > questions.length - 1) {
+              setShowResult(true)
+              return 0
+            } else {
+              return index
+            }
+          })
     }
 
+    const restartGame = () => {
+        setShowResult(false);
+        setIsStart(false);
+        setCorrect(0);
+        setIndex(0);
+    }
+
+    
     return <QuizContext.Provider value={{
         options,
         isStart,
@@ -77,9 +90,11 @@ export const QuizContextProvider = ({children}: QuizContextProps)=>{
         index,
         isLoading,
         correct,
+        showResult,
         handleInputChange,
         handleStart,
-        nextQuestion
+        nextQuestion,
+        restartGame
     }}>
         {children}
     </QuizContext.Provider>

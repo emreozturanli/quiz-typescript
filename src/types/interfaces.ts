@@ -25,7 +25,9 @@ export interface IQuizContext {
     index : number
     correct : number
     isLoading: boolean
+    showResult: boolean
     handleInputChange : (e:any) => void
     handleStart : (e:any) => void
     nextQuestion : (element:string) => void
+    restartGame : () => void
 }
